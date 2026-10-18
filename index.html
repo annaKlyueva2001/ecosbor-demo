@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ЭкоСбор — демо</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--color-bg:#f3efe6;--color-surface:#fff;--color-surface-alt:#fbf8f1;--color-border:#ddd6c7;--color-text:#2a2823;--color-text-secondary:#6b6558;--color-accent:#3e5c46;--color-accent-dark:#2c4433;--color-accent-tint:#e4ebe3;--color-warning:#93672a;--color-warning-tint:#f3e6ce;--color-error:#9c4a3c;--color-error-tint:#f3e2dd}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45}
+h1,h2,h3{font-family:"IBM Plex Serif",Georgia,"Times New Roman",serif;font-weight:600;color:var(--color-accent-dark);margin:0}
+h1{font-size:22px}h2{font-size:16px}
+a{color:inherit;text-decoration:none}
+table{font-variant-numeric:tabular-nums}
+button,input,select,textarea{font-family:inherit;font-size:inherit}
+.demo-banner{background:var(--color-warning-tint);color:var(--color-warning);padding:9px 32px;font-size:13px;text-align:center;border-bottom:1px solid var(--color-border)}
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:10px;padding:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:7px;border:1px solid transparent;font-size:13.5px;font-weight:600;line-height:1;white-space:nowrap;cursor:pointer}
+.btn-primary{background:var(--color-accent);color:#fff}.btn-primary:hover{background:var(--color-accent-dark)}
+.btn-secondary{background:var(--color-surface);color:var(--color-text);border-color:var(--color-border)}.btn-secondary:hover{background:var(--color-surface-alt)}
+.btn-danger{background:var(--color-error);color:#fff}.btn-danger:hover{background:#843f33}
+.btn-small{padding:6px 12px;font-size:12.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.field label{font-size:13px;font-weight:600}
+.field input,.field select,.field textarea{padding:10px 12px;border:1px solid var(--color-border);border-radius:7px;background:#fff;color:var(--color-text)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--color-accent);outline-offset:1px}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;font-size:12px;font-weight:600;white-space:nowrap}
+.badge-ok{background:var(--color-accent-tint);color:var(--color-accent-dark)}
+.badge-review{background:var(--color-warning-tint);color:var(--color-warning)}
+.badge-muted{background:var(--color-surface-alt);color:var(--color-text-secondary);border:1px solid var(--color-border)}
+.badge-danger{background:var(--color-error-tint);color:var(--color-error)}
+.year-badge{display:inline-flex;align-items:center;padding:2px 12px;border-radius:8px;background:var(--color-accent);color:#fff;font-weight:700;font-size:14px;white-space:nowrap}
+.year-badge-lg{padding:4px 16px;font-size:18px}
+.topbar{background:var(--color-surface);border-bottom:1px solid var(--color-border);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:"IBM Plex Serif",Georgia,serif;font-size:19px;font-weight:600;color:var(--color-accent-dark);white-space:nowrap}
+.brand-mark{width:26px;height:26px;border-radius:7px;background:var(--color-accent);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+.tabs{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:7px;color:var(--color-text-secondary);font-size:13.5px;font-weight:500;display:inline-block}
+.tab:hover,.tab.active{background:var(--color-surface-alt)}
+.tab.active{color:var(--color-accent-dark)}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 48px}
+main.narrow{max-width:860px}
+.row{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.between{justify-content:space-between}
+.mb{margin-bottom:16px}.mb-lg{margin-bottom:24px}
+.muted{color:var(--color-text-secondary)}
+.small{font-size:12.5px}
+.session-cards{display:flex;flex-direction:column;gap:10px}
+.session-card{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border:1px solid var(--color-border);border-radius:9px;background:var(--color-surface);gap:16px;flex-wrap:wrap}
+.s-info{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.dash-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--color-border)}
+.dash-tab{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;margin-bottom:-1px;background:transparent;border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;color:var(--color-text-secondary);font-size:14px;font-weight:500;cursor:pointer}
+.dash-tab:hover{color:var(--color-text)}
+.dash-tab-active{background:#fff;border-color:var(--color-border);color:var(--color-accent-dark);font-weight:600}
+.dash-tab-count{min-width:22px;padding:1px 7px;border-radius:999px;background:var(--color-accent-tint);color:var(--color-accent-dark);font-size:12px;font-weight:600;text-align:center}
+.box{border:1px solid var(--color-border);border-radius:10px;background:#fff;padding:16px}
+.box-accent{background:var(--color-accent-tint);border-color:#c9d6c8}
+.box-warn{background:var(--color-warning-tint);border-color:#e6d3ae}
+.table-wrap{overflow-x:auto;border:1px solid var(--color-border);border-radius:10px;background:#fff}
+table.data{width:100%;border-collapse:collapse;min-width:560px}
+table.data th{text-align:left;font-size:12px;color:var(--color-text-secondary);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--color-border);background:var(--color-surface-alt);white-space:nowrap}
+table.data td{padding:10px 12px;border-bottom:1px solid var(--color-border);font-size:13.5px;vertical-align:top}
+table.data tr:last-child td{border-bottom:none}
+table.data input[type=number],table.data select,table.data input[type=text]{padding:6px 8px;border:1px solid var(--color-border);border-radius:6px;background:#fff;width:100px}
+table.data select{width:130px}
+table.data input:disabled,table.data select:disabled{background:#efece4;color:#6b6558}
+.big{font-family:"IBM Plex Serif",Georgia,serif;font-size:30px;font-weight:600;color:var(--color-accent)}
+.num{white-space:nowrap}
+.hl{background:var(--color-warning-tint)}.hl-add{background:var(--color-accent-tint)}.hl-del{background:var(--color-error-tint)}
+.strong{font-weight:600}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--color-accent-dark);color:#fff;padding:12px 18px;border-radius:9px;font-size:13.5px;max-width:90%;z-index:10;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.hidden{display:none}
+.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.filters .field{margin-bottom:0}
+details>summary{cursor:pointer}
+ol.steps{margin:6px 0 10px 18px;padding:0}
+.doc h2{margin:22px 0 8px}.doc p{margin:0 0 10px;max-width:70ch}.doc li{margin-bottom:4px}
+@media (max-width:640px){.topbar{padding:12px 16px}.demo-banner{padding:9px 16px}.card{padding:16px}}
+</style>
+</head>
+<body>
+<div class="demo-banner"><strong>Демо-версия.</strong> Все данные вымышленные, ничего не сохраняется (обновите страницу — всё вернётся как было). Загрузка своих файлов и вход отключены.</div>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">Э</span>ЭкоСбор</div>
+  <nav class="tabs" id="nav"></nav>
+  <div class="row"><span class="badge badge-muted">демо</span><span class="muted small">demo@ecosbor.example</span></div>
+</header>
+<main id="app"></main>
+<div class="toast hidden" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Справочник ставок (условные значения для демонстрации) ----------
+  const RATES = [
+    { id: "wood", name: "Дерево", hs: "4415202000", rate: 3066, norm: 0.2 },
+    { id: "card", name: "Картон", hs: "4819100000", rate: 2378, norm: 0.45 },
+    { id: "plastic", name: "Пластик", hs: "3920100000", rate: 5000, norm: 0.3 },
+    { id: "glass", name: "Стекло", hs: "7010900000", rate: 1500, norm: 0.25 },
+  ];
+  const rateById = (id) => RATES.find((r) => r.id === id);
+
+  // ---------- Данные демо (вымышленные) ----------
+  const ME = "demo@ecosbor.example";
+  let nextId = 200;
+  let nextItem = 1000;
+  const item = (desc, rateId, weight, confirmed = true, docNumber) => ({
+    id: nextItem++, desc, rateId, weight, rateOverride: null, normOverride: null, confirmed, docNumber,
+  });
+  const doc = (number, file, size, uploaded, extra = {}) => ({
+    number, file, size, uploaded,
+    country: "Турция", sender: "Demo Packaging Ltd.", currency: "USD", price: 120000, area: 2500,
+    gross: 14500, net: 13800, pallets: 40, boxes: 800, ...extra,
+  });
+
+  const SESSIONS = [
+    { id: 101, year: 2024, status: "calculated", owner: ME, created: "2026-10-08", scope: "own",
+      docs: [doc("10005020/150524/0112233", "gtd_0112233.pdf", 158, "2026-10-08")],
+      items: [item("Паллеты деревянные", "wood", 8400, true, "10005020/150524/0112233"), item("Коробки картонные", "card", 5200, true, "10005020/150524/0112233")] },
+    { id: 102, year: 2025, status: "in_review", owner: ME, created: "2026-10-09", scope: "own",
+      docs: [doc("10005020/200225/0445566", "gtd_0445566.pdf", 212, "2026-10-09", { country: "Китай", sender: "Sample Trade Co." })],
+      items: [item("Паллеты деревянные", "wood", 6000, false, "10005020/200225/0445566"), item("Плёнка стрейч", "plastic", 800, false, "10005020/200225/0445566")] },
+    { id: 103, year: 2024, status: "calculated", owner: ME, created: "2026-10-05", scope: "own",
+      docs: [doc("10005020/150524/0112233", "gtd_0112233.pdf", 158, "2026-10-05"), doc("10005030/010324/0778899", "gtd_0778899.pdf", 187, "2026-10-05", { country: "Германия", sender: "Muster Verpackung GmbH" })],
+      items: [item("Паллеты деревянные", "wood", 7000, true, "10005030/010324/0778899"), item("Коробки картонные", "card", 3100, true, "10005030/010324/0778899"), item("Банки стеклянные", "glass", 2200, true, "10005030/010324/0778899")] },
+    { id: 104, year: 2025, status: "calculated", owner: "manager@example.com", created: "2026-10-07", scope: "shared", canEdit: true,
+      docs: [doc("10005020/110625/0990011", "gtd_0990011.pdf", 174, "2026-10-07", { country: "Польша", sender: "Przykład Sp. z o.o." })],
+      items: [item("Паллеты деревянные", "wood", 12000, true, "10005020/110625/0990011"), item("Коробки картонные", "card", 9000, true, "10005020/110625/0990011")] },
+  ];
+  const sessionById = (id) => SESSIONS.find((s) => s.id === Number(id));
+
+  // Предложения правок. Одно уже пришло владельцу (то есть вам) к расчёту 101.
+  const PROPOSALS = [];
+  (function seedIncoming() {
+    const base = sessionById(101);
+    const draft = cloneSession(base, { owner: "anna.k@example.com", ownerEmailOfBase: ME });
+    draft.items[0].weight = 9100;
+    draft.items.push(item("Плёнка стрейч", "plastic", 300, true, "10005020/150524/0112233"));
+    PROPOSALS.push({ id: 1, baseId: 101, draftId: draft.id, by: "anna.k@example.com", status: "pending", note: "Уточнила вес паллет по пакинг-листу и добавила плёнку, которую забыли." });
+  })();
+
+  function cloneSession(base, overrides) {
+    const copy = JSON.parse(JSON.stringify(base));
+    copy.id = nextId++;
+    copy.draftOf = base.id;
+    copy.status = "calculated";
+    copy.items.forEach((it) => (it.id = nextItem++));
+    Object.assign(copy, overrides);
+    SESSIONS.push(copy);
+    return copy;
+  }
+
+  // ---------- Вспомогательное ----------
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const money = (n) => Number(n).toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const num = (n) => (n == null || n === "" ? "—" : new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 6 }).format(n));
+  const dateRu = (iso) => new Date(iso).toLocaleDateString("ru-RU");
+  const STATUS = { draft: "Черновик", in_review: "На проверке", calculated: "Рассчитан" };
+  const statusBadge = (st) => `<span class="badge ${st === "calculated" ? "badge-ok" : "badge-review"}">${STATUS[st] || st}</span>`;
+  const isDraft = (s) => Boolean(s.draftOf);
+  const visibleSessions = () => SESSIONS.filter((s) => !isDraft(s));
+
+  function rowOf(it) {
+    const r = rateById(it.rateId);
+    const rate = it.rateOverride ?? (r ? r.rate : 0);
+    const norm = it.normOverride ?? (r ? r.norm : 1);
+    const w = Number(it.weight) || 0;
+    return { rate, norm, weight: w, amount: Math.round((w / 1000) * rate * norm * 100) / 100 };
+  }
+  function totalOf(s) { return Math.round(s.items.reduce((sum, it) => sum + rowOf(it).amount, 0) * 100) / 100; }
+
+  function toast(text) {
+    const el = document.getElementById("toast");
+    el.textContent = text; el.classList.remove("hidden");
+    clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add("hidden"), 3200);
+  }
+
+  // ---------- ГТД: список без повторов ----------
+  function parseNumber(n) {
+    const m = String(n).match(/^(\d{8})\/(\d{2})(\d{2})(\d{2})\/(\w+)$/);
+    return m ? { serial: m[5], year: 2000 + Number(m[4]) } : { serial: null, year: null };
+  }
+  function gtdList() {
+    const map = new Map();
+    visibleSessions().forEach((s) => s.docs.forEach((d) => {
+      const e = map.get(d.number) || { number: d.number, file: d.file, size: d.size, uploaded: d.uploaded, sessions: [], ...parseNumber(d.number) };
+      if (!e.sessions.find((x) => x.id === s.id)) e.sessions.push({ id: s.id, owner: s.scope === "shared" ? s.owner : null });
+      if (d.uploaded > e.uploaded) e.uploaded = d.uploaded;
+      map.set(d.number, e);
+    }));
+    return [...map.values()].sort((a, b) => (b.year || 0) - (a.year || 0) || b.uploaded.localeCompare(a.uploaded));
+  }
+  function matchesNumber(g, raw) {
+    const q = raw.trim().toLowerCase().replace(/\s+/g, "");
+    if (!q) return true;
+    if (/^\d+$/.test(q) && q.length <= 7) return (g.serial || "").endsWith(q);
+    return g.number.toLowerCase().includes(q);
+  }
+
+  // ---------- Состояние интерфейса ----------
+  const ui = { tab: "all", gtdNumber: "", gtdYear: "" };
+
+  // ---------- Страницы ----------
+  function navHtml(route) {
+    const items = [["#/", "Расчёты", "dash"], ["#/rates", "База ставок", "rates"], ["#/docs", "Документация", "docs"]];
+    document.getElementById("nav").innerHTML = items.map(([href, label, key]) => `<a class="tab ${route === key ? "active" : ""}" href="${href}">${label}</a>`).join("");
+  }
+
+  function pageDashboard() {
+    const own = visibleSessions().filter((s) => s.scope === "own").sort((a, b) => b.created.localeCompare(a.created));
+    const shared = visibleSessions().filter((s) => s.scope === "shared");
+    const all = [...own, ...shared].sort((a, b) => b.created.localeCompare(a.created));
+    const gtds = gtdList();
+    const tabs = [["all", "Все сессии", all.length], ["own", "Мои расчёты", own.length], ["shared", "Открыты для меня", shared.length], ["gtd", "ГТД", gtds.length]];
+    const list = ui.tab === "all" ? all : ui.tab === "own" ? own : shared;
+    const marks = (s) => {
+      const incoming = PROPOSALS.filter((p) => p.baseId === s.id && p.status === "pending").length;
+      const mine = PROPOSALS.find((p) => p.baseId === s.id && p.by === ME && ["draft", "pending", "rejected"].includes(p.status));
+      let h = "";
+      if (incoming) h += `<span class="badge badge-review">${incoming === 1 ? "предложена правка" : "предложено правок: " + incoming}</span>`;
+      if (mine) h += `<span class="badge badge-review">${{ draft: "ваша правка в работе", pending: "ваша правка на рассмотрении", rejected: "вашу правку отклонили" }[mine.status]}</span>`;
+      return h;
+    };
+    const card = (s) => `<div class="session-card"><div class="s-info">
+        <span class="year-badge">${s.year}</span>
+        ${s.scope === "shared" ? `<span class="muted">${esc(s.owner)}</span>` : ""}
+        ${statusBadge(s.status)}
+        ${s.scope === "shared" ? `<span class="badge badge-muted">полный доступ, можно предлагать правки</span>` : ""}
+        ${marks(s)}
+        <span class="muted small">${dateRu(s.created)}</span></div>
+        <a class="btn btn-secondary btn-small" href="#/calc/${s.id}/${s.status === "calculated" ? "result" : "review"}">Открыть</a></div>`;
+
+    let body;
+    if (ui.tab === "gtd") body = gtdBody(gtds);
+    else body = `<div class="session-cards">${list.map(card).join("") || `<div class="card muted">Здесь пока пусто</div>`}</div>`;
+
+    return `<div class="row between mb-lg"><h1>Список расчётов</h1><a class="btn btn-primary" href="#/new">Начать новый расчёт</a></div>
+      <div class="dash-tabs">${tabs.map(([k, l, c]) => `<button class="dash-tab ${ui.tab === k ? "dash-tab-active" : ""}" data-act="tab" data-tab="${k}">${l}<span class="dash-tab-count">${c}</span></button>`).join("")}</div>${body}`;
+  }
+
+  function gtdBody(gtds) {
+    const years = [...new Set(gtds.map((g) => g.year).filter(Boolean))].sort((a, b) => b - a);
+    const found = gtds.filter((g) => matchesNumber(g, ui.gtdNumber) && (!ui.gtdYear || g.year === Number(ui.gtdYear)));
+    const filtering = ui.gtdNumber.trim() || ui.gtdYear;
+    return `<div class="card mb"><div class="filters">
+        <div class="field" style="flex:1 1 220px"><label for="gtd-number">Номер ГТД (последние цифры или часть номера)</label>
+          <input id="gtd-number" type="text" inputmode="numeric" placeholder="например, 2233" autocomplete="off" value="${esc(ui.gtdNumber)}" data-act="gtd-number"></div>
+        <div class="field" style="flex:0 1 160px"><label for="gtd-year">Год ГТД</label>
+          <select id="gtd-year" data-act="gtd-year"><option value="">Все годы</option>${years.map((y) => `<option value="${y}" ${String(y) === String(ui.gtdYear) ? "selected" : ""}>${y}</option>`).join("")}</select></div>
+        ${filtering ? `<button class="btn btn-secondary" data-act="gtd-reset">Сбросить</button>` : ""}</div>
+        <p class="muted small" style="margin:10px 0 0">Номер и год берутся из самой ГТД, когда файл прочитан ИИ-помощником. Один и тот же файл, загруженный в несколько расчётов, показан один раз — со ссылками на эти расчёты. В демо файлов нет, кнопка «Открыть» только показывает подсказку.</p></div>
+      ${found.length ? `<p class="muted small" style="margin:0 0 8px">Найдено: ${found.length}</p><div class="session-cards">${found.map((g) => `<div class="session-card"><div class="s-info">
+          ${g.year ? `<span class="year-badge">${g.year}</span>` : ""}<strong>${esc(g.number)}</strong>
+          <span class="muted small">${esc(g.file)} · ${g.size} КБ · ${dateRu(g.uploaded)}</span>
+          <span class="small">В расчётах: ${g.sessions.map((s) => `<a href="#/calc/${s.id}/result" style="color:var(--color-accent);text-decoration:underline">№${s.id}${s.owner ? " (" + esc(s.owner) + ")" : ""}</a>`).join(", ")}</span></div>
+          <button class="btn btn-secondary btn-small" data-act="no-file">Открыть</button></div>`).join("")}</div>`
+        : `<div class="card muted" style="text-align:center;border-style:dashed">По этому номеру и году ничего не найдено.</div>`}`;
+  }
+
+  function pageNew() {
+    return `<div class="mb-lg"><a class="muted small" href="#/">← К списку расчётов</a></div><h1 class="mb">Новый расчёт</h1>
+      <div class="card"><div class="field" style="max-width:200px"><label>Год расчёта</label><select disabled><option>2025</option></select></div>
+        <div class="box" style="border-style:dashed;text-align:center;padding:36px 16px;margin-bottom:16px"><p class="strong" style="margin:0 0 6px">Загрузка ГТД и пакинг-листов</p>
+          <p class="muted small" style="margin:0 0 14px">PDF, Excel или CSV. В рабочей версии файлы читает ИИ-помощник, а вы проверяете позиции.</p>
+          <button class="btn btn-secondary" disabled>Выбрать файлы</button></div>
+        <div class="box box-warn mb"><strong>В демо загрузка отключена.</strong> Мы не принимаем файлы и ничего не считаем по реальным ГТД. Зато можно открыть готовый пример и посмотреть, как выглядит результат.</div>
+        <div class="row"><button class="btn btn-primary" disabled>Загрузить и рассчитать</button><a class="btn btn-secondary" href="#/calc/101/result">Открыть готовый пример</a></div></div>`;
+  }
+
+  function banners(s) {
+    if (isDraft(s)) {
+      const p = PROPOSALS.find((x) => x.draftId === s.id);
+      const base = sessionById(s.draftOf);
+      if (!p || !base) return "";
+      const ready = s.status === "calculated";
+      const mineDraft = s.owner === ME;
+      if (mineDraft) {
+        return `<div class="box box-accent mb"><p class="strong" style="margin:0 0 4px">Это ваша копия расчёта для правки (владелец: ${esc(base.owner)})</p>
+          <p class="muted small" style="margin:0 0 6px">Меняйте позиции здесь — исходный расчёт при этом не затрагивается.</p>
+          <ol class="steps small"><li>Подтверждённые строки закрыты от правки: снимите галочку «Подтв.» в строке, которую хотите изменить.</li><li>Поменяйте вес, количество, ставку или норматив и снова поставьте галочку «Подтв.».</li><li>Внизу страницы нажмите «Рассчитать».</li><li>Вернитесь сюда и нажмите «Предложить владельцу» (кнопка станет активной после расчёта).</li></ol>
+          ${p.status === "rejected" ? `<p>Владелец отклонил правку: «${esc(p.resolved || "")}». Доработайте и отправьте снова либо отзовите.</p>` : ""}
+          ${p.status === "pending" ? `<p class="strong">Правка отправлена владельцу и ждёт его решения.</p>` : `<div class="field" style="margin:10px 0"><label>Комментарий владельцу (необязательно): что вы изменили и почему</label><textarea id="note" rows="2">${esc(p.note || "")}</textarea></div>`}
+          <div class="row"><button class="btn btn-primary" data-act="submit" data-p="${p.id}" ${ready && p.status !== "pending" ? "" : "disabled"}>Предложить владельцу</button>
+          <a class="btn btn-secondary" href="#/calc/${s.id}/result">К результату</a><a class="btn btn-secondary" href="#/calc/${s.id}/review">К позициям</a>
+          <a class="btn btn-secondary" href="#/calc/${base.id}/result">К исходному расчёту</a><button class="btn btn-secondary" data-act="cancel" data-p="${p.id}">Отозвать правку</button></div></div>`;
+      }
+      if (p.status === "pending") {
+        return `<div class="box box-warn mb"><p class="strong" style="margin:0 0 6px">Это предложенный вариант от ${esc(p.by)}. Исходный расчёт: №${base.id}.</p>
+          <div class="row"><button class="btn btn-primary btn-small" data-act="accept" data-p="${p.id}">Принять правку</button><button class="btn btn-danger btn-small" data-act="reject" data-p="${p.id}">Отклонить</button><a class="btn btn-secondary btn-small" href="#/calc/${base.id}/result">К моему расчёту</a></div></div>`;
+      }
+    }
+    return "";
+  }
+
+  function proposalBanners(s) {
+    // Владельцу: пришла правка.
+    let h = "";
+    PROPOSALS.filter((p) => p.baseId === s.id && p.status === "pending").forEach((p) => {
+      const draft = sessionById(p.draftId);
+      const bt = totalOf(s), dt = totalOf(draft), diff = dt - bt;
+      h += `<div class="box box-warn mb"><p class="strong" style="margin:0 0 4px">${esc(p.by)} предложил(а) правку к этому расчёту</p>
+        ${p.note ? `<p style="margin:0 0 6px">Комментарий: «${esc(p.note)}»</p>` : ""}
+        <p style="margin:6px 0">Итог сейчас: <strong>${money(bt)} ₽</strong> → в правке: <strong>${money(dt)} ₽</strong> <span class="muted">(${diff >= 0 ? "+" : "−"}${money(Math.abs(diff))} ₽)</span></p>
+        <div class="row"><button class="btn btn-primary btn-small" data-act="accept" data-p="${p.id}">Принять правку</button><button class="btn btn-danger btn-small" data-act="reject" data-p="${p.id}">Отклонить</button>
+        <a class="btn btn-secondary btn-small" href="#/calc/${draft.id}/result">Открыть предложенный вариант</a></div></div>${compareBlock(s, draft)}`;
+    });
+    // Коллеге на странице чужого расчёта.
+    if (s.scope === "shared") {
+      const mine = PROPOSALS.find((p) => p.baseId === s.id && p.by === ME && ["draft", "pending", "rejected"].includes(p.status));
+      if (!mine) {
+        h += `<div class="box box-accent mb"><p class="strong" style="margin:0 0 4px">Расчёт открыт вам с правом предлагать правки</p>
+          <p class="muted small" style="margin:0 0 10px">Расчёт владельца напрямую не меняется: вы правите свою копию и предлагаете её владельцу, а он принимает или отклоняет.</p>
+          <button class="btn btn-primary" data-act="propose" data-base="${s.id}">Предложить правку</button></div>`;
+      } else {
+        const label = { draft: "У вас есть незавершённая правка к этому расчёту. Владелец увидит её только после того, как вы нажмёте «Предложить владельцу».", pending: "Ваша правка отправлена владельцу и ждёт его решения.", rejected: "Владелец отклонил вашу правку. Доработайте её и отправьте снова либо отзовите." }[mine.status];
+        h += `<div class="box box-accent mb"><p style="margin:0 0 10px">${label}</p><div class="row"><a class="btn btn-primary" href="#/calc/${mine.draftId}/review">Продолжить правку</a><button class="btn btn-secondary" data-act="cancel" data-p="${mine.id}">Отозвать правку</button></div></div>${compareBlock(s, sessionById(mine.draftId))}`;
+      }
+    }
+    return h;
+  }
+
+  // «Было / стало»: строки сопоставляются по описанию (при повторах — по порядку).
+  function compareBlock(base, draft) {
+    const idx = (s) => { const seen = {}; return s.items.map((it) => { seen[it.desc] = (seen[it.desc] || 0) + 1; return { it, key: it.desc + "#" + seen[it.desc] }; }); };
+    const b = idx(base), d = idx(draft), dm = new Map(d.map((x) => [x.key, x])), used = new Set(), pairs = [];
+    b.forEach((x) => { const y = dm.get(x.key) || null; if (y) used.add(y.key); pairs.push([x.it, y && y.it]); });
+    d.forEach((x) => { if (!used.has(x.key)) pairs.push([null, x.it]); });
+    const cells = (it, other) => {
+      if (!it) return `<td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td>`;
+      const r = rowOf(it), o = other ? rowOf(other) : null, f = (k, v) => `<td class="num" ${o && o[k] !== r[k] ? 'style="font-weight:600"' : ""}>${v}</td>`;
+      return f("weight", num(r.weight)) + f("rate", num(r.rate)) + f("norm", num(r.norm)) + f("amount", money(r.amount));
+    };
+    let changed = 0;
+    const rows = pairs.map(([x, y]) => {
+      let st = "same";
+      if (!x) st = "add"; else if (!y) st = "del"; else { const a = rowOf(x), c = rowOf(y); if (a.weight !== c.weight || a.rate !== c.rate || a.norm !== c.norm) st = "chg"; }
+      if (st !== "same") changed++;
+      const cls = { same: "", chg: "hl", add: "hl-add", del: "hl-del" }[st];
+      const lbl = { same: "без изменений", chg: "изменено", add: "добавлено в правке", del: "убрано в правке" }[st];
+      return `<tr class="${cls}"><td>${esc((x || y).desc)}</td>${cells(x, y)}${cells(y, x)}<td class="num">${lbl}</td></tr>`;
+    }).join("");
+    const bt = totalOf(base), dt = totalOf(draft), diff = dt - bt;
+    return `<details open class="box mb-lg"><summary class="strong">Сравнение: исходный расчёт и правка <span class="muted small" style="font-weight:400;margin-left:8px">${changed ? "изменённых строк: " + changed : "изменений нет"}</span></summary>
+      <p style="margin:12px 0 0">Итог было: <strong>${money(bt)} ₽</strong> → в правке: <strong>${money(dt)} ₽</strong>${diff ? ` <span class="muted">(${diff > 0 ? "+" : "−"}${money(Math.abs(diff))} ₽)</span>` : ""}</p>
+      <div class="table-wrap" style="margin-top:12px"><table class="data"><thead><tr><th rowspan="2">Позиция</th><th colspan="4">Исходный расчёт</th><th colspan="4">Правка</th><th rowspan="2">Что с ней</th></tr>
+      <tr><th>Вес, кг</th><th>Ставка</th><th>Норматив</th><th>Сумма, ₽</th><th>Вес, кг</th><th>Ставка</th><th>Норматив</th><th>Сумма, ₽</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="muted small" style="margin:8px 0 0">Жирным выделены значения, которые отличаются от второй версии.</p></details>`;
+  }
+
+  function pageResult(id) {
+    const s = sessionById(id);
+    if (!s) return notFound();
+    const ready = s.status === "calculated";
+    const owner = s.owner === ME;
+    const draft = isDraft(s);
+    let head = `<div class="mb-lg"><a class="muted small" href="#/">← К списку расчётов</a></div>
+      <h1 class="row mb">Расчёт экологического сбора <span class="year-badge year-badge-lg">${s.year} год</span></h1>`;
+    if (!owner && s.scope === "shared") head += `<div class="box mb muted">Этот расчёт открыл вам ${esc(s.owner)}: доступ полный, вы можете предлагать правки.</div>`;
+    head += banners(s);
+    if (draft) { const base = sessionById(s.draftOf); head += compareBlock(base, s); }
+    else head += proposalBanners(s);
+    head += `<div class="row mb-lg"><a class="btn btn-secondary" href="#/calc/${s.id}/review">${owner ? "Редактировать позиции" : "Позиции расчёта (просмотр)"}</a></div>`;
+    if (!ready) {
+      const un = s.items.filter((i) => !i.confirmed).length;
+      return head + `<div class="card" style="border-style:dashed"><p class="muted" style="margin:0 0 8px">Кнопка скачивания недоступна — расчёт ещё не завершён.</p>
+        <p class="muted small">Причина: не подтверждены все позиции (${un} шт.). Вернитесь на <a href="#/calc/${s.id}/review" style="color:var(--color-accent);text-decoration:underline">экран проверки позиций</a> и подтвердите их, затем нажмите «Рассчитать».</p></div>`;
+    }
+    const total = totalOf(s);
+    const decl = s.docs.map((d) => {
+      const its = s.items.filter((i) => i.docNumber === d.number);
+      const mass = (rid) => its.filter((i) => i.rateId === rid).reduce((a, i) => a + (Number(i.weight) || 0), 0) || "";
+      const sum = its.reduce((a, i) => a + rowOf(i).amount, 0);
+      return `<tr><td class="num">${esc(d.number)}</td><td>${esc(d.country)}</td><td>${esc(d.sender)}</td><td>${d.currency}</td><td class="num">${num(d.price)}</td><td class="num">${num(d.area)}</td><td class="num">${num(d.gross)}</td><td class="num">${num(d.net)}</td><td class="num">${d.pallets}</td><td class="num">${d.boxes}</td>
+        ${["wood", "card"].map((r) => `<td class="num">${mass(r) ? num(mass(r)) : ""}</td>`).join("")}<td class="num strong">${money(sum)}</td></tr>`;
+    }).join("");
+    const rows = s.items.map((i) => { const r = rowOf(i), rt = rateById(i.rateId); return `<tr><td class="num">${rt.hs}</td><td>${esc(i.desc)}</td><td>${rt.name}</td><td class="num">${num(r.weight)}</td><td class="num">${num(r.rate)}</td><td class="num">${num(r.norm)}</td><td class="num">${money(r.amount)}</td></tr>`; }).join("");
+    return head + `<div class="card mb-lg"><p class="muted small" style="margin:0 0 4px">Итоговая сумма к уплате</p><p class="big" style="margin:0 0 14px">${money(total)} ₽</p>
+      <button class="btn btn-primary" data-act="no-excel">Скачать Excel</button></div>
+      <h2 class="mb">Расчёт по декларациям (ГТД)</h2><div class="table-wrap mb-lg"><table class="data" style="min-width:1000px"><thead><tr><th>Номер ГТД</th><th>Страна отпр.</th><th>Отправитель</th><th>Валюта</th><th>Цена</th><th>м²</th><th>Брутто, кг</th><th>Нетто, кг</th><th>Паллет</th><th>Коробок</th><th>Масса, Дерево, кг</th><th>Масса, Картон, кг</th><th>Сумма экосбора, ₽</th></tr></thead><tbody>${decl}</tbody></table></div>
+      <h2 class="mb">Разбивка по позициям</h2><div class="table-wrap mb-lg"><table class="data"><thead><tr><th>Код ТН ВЭД</th><th>Описание позиции</th><th>Наименование из базы</th><th>Вес, кг</th><th>Ставка, ₽/т</th><th>Норматив</th><th>Сумма, ₽</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <h2 class="mb">Документы расчёта (ГТД)</h2><div class="session-cards">${s.docs.map((d) => `<div class="session-card"><span><span class="badge badge-muted" style="margin-right:8px">ГТД</span>${esc(d.file)} <span class="muted">· ${d.size} КБ</span></span><button class="btn btn-secondary btn-small" data-act="no-file">Открыть</button></div>`).join("")}</div>`;
+  }
+
+  function pageReview(id) {
+    const s = sessionById(id);
+    if (!s) return notFound();
+    const canEdit = s.owner === ME; // владелец расчёта или автор копии для правки
+    const draft = isDraft(s);
+    let h = `<div class="mb-lg"><a class="muted small" href="#/">← К списку расчётов</a></div><h1 class="row mb">Проверка и сопоставление позиций <span class="year-badge year-badge-lg">год расчёта: ${s.year}</span></h1>
+      <p class="muted small box mb">Демо: данные вымышленные, изменения живут только до обновления страницы.</p>`;
+    h += banners(s);
+    if (draft) h += compareBlock(sessionById(s.draftOf), s);
+    else if (s.scope === "shared") h += proposalBanners(s);
+    else h += proposalBanners(s);
+    const unconfirmed = s.items.filter((i) => !i.confirmed).length;
+    const rows = s.items.map((i) => {
+      const r = rowOf(i), locked = !canEdit || i.confirmed, rt = rateById(i.rateId);
+      return `<tr><td>${esc(i.desc)}</td>
+        <td><select data-act="rate" data-i="${i.id}" ${locked ? "disabled" : ""}>${RATES.map((x) => `<option value="${x.id}" ${x.id === i.rateId ? "selected" : ""}>${x.name}</option>`).join("")}</select></td>
+        <td class="num">${rt.hs}</td>
+        <td><input type="number" step="any" min="0" value="${i.weight}" data-act="weight" data-i="${i.id}" ${locked ? "disabled" : ""}></td>
+        <td><input type="number" step="any" min="0" value="${r.rate}" data-act="rateOv" data-i="${i.id}" ${locked ? "disabled" : ""}></td>
+        <td><input type="number" step="any" min="0" value="${r.norm}" data-act="normOv" data-i="${i.id}" ${locked ? "disabled" : ""}></td>
+        <td><span class="muted">сопоставлено</span></td>
+        ${canEdit ? `<td><input type="checkbox" ${i.confirmed ? "checked" : ""} data-act="confirm" data-i="${i.id}"></td><td>${i.confirmed ? "" : `<button class="btn btn-secondary btn-small" data-act="del" data-i="${i.id}">Удалить</button>`}</td>` : ""}</tr>`;
+    }).join("");
+    h += `<div class="table-wrap mb-lg"><table class="data" style="min-width:900px"><thead><tr><th>Описание</th><th>Наименование из базы</th><th>Код ТН ВЭД</th><th>Вес, кг</th><th>Ставка, ₽/т</th><th>Норматив</th><th>Статус</th>${canEdit ? "<th>Подтв.</th><th></th>" : ""}</tr></thead><tbody>${rows}</tbody></table></div>`;
+    if (canEdit) {
+      h += `<div class="card mb-lg"><h2 class="mb">Добавить позицию вручную</h2><div class="filters">
+        <div class="field" style="flex:1 1 220px"><label>Описание позиции</label><input id="new-desc" type="text" placeholder="например, Коробки картонные"></div>
+        <div class="field"><label>Материал</label><select id="new-rate">${RATES.map((x) => `<option value="${x.id}">${x.name}</option>`).join("")}</select></div>
+        <div class="field" style="width:130px"><label>Вес, кг</label><input id="new-weight" type="number" min="0" step="any"></div>
+        <button class="btn btn-secondary" data-act="add" data-s="${s.id}">Добавить позицию</button></div></div>
+        <div class="row"><button class="btn btn-primary" data-act="calc" data-s="${s.id}" ${s.items.length && !unconfirmed ? "" : "disabled"}>Рассчитать</button>
+        ${unconfirmed ? `<span class="muted small">Подтвердите оставшиеся позиции (${unconfirmed}), чтобы кнопка стала активной.</span>` : ""}</div>`;
+    } else {
+      h += `<p class="muted">Позиции открыты для просмотра. Чтобы предложить изменения, нажмите «Предложить правку» выше.</p>`;
+    }
+    h += `<h2 class="mb" style="margin-top:28px">Документы расчёта (ГТД)</h2><div class="session-cards">${s.docs.map((d) => `<div class="session-card"><span><span class="badge badge-muted" style="margin-right:8px">ГТД</span>${esc(d.file)} <span class="muted">· ${d.size} КБ</span></span><button class="btn btn-secondary btn-small" data-act="no-file">Открыть</button></div>`).join("")}</div>`;
+    return h;
+  }
+
+  function pageRates() {
+    return `<h1 class="mb">База ставок</h1><p class="box box-warn mb">В демо ставки и нормативы <strong>условные</strong> и нужны только для показа интерфейса. Для реальных расчётов используются значения из постановлений, которые поддерживает администратор.</p>
+      <div class="table-wrap"><table class="data"><thead><tr><th>Наименование</th><th>Код ТН ВЭД</th><th>Ставка, ₽/т</th><th>Норматив</th><th>Год</th></tr></thead><tbody>
+      ${RATES.map((r) => `<tr><td>${r.name}</td><td class="num">${r.hs}</td><td class="num">${num(r.rate)}</td><td class="num">${num(r.norm)}</td><td>2024</td></tr>`).join("")}</tbody></table></div>`;
+  }
+
+  function pageDocs() {
+    return `<div class="doc"><h1 class="mb">Документация</h1>
+      <h2>Как считается сбор</h2><p>Сумма по позиции = вес в тоннах × ставка (₽/т) × норматив. Если веса нет, берётся количество единиц. Итог — сумма по всем позициям расчёта.</p>
+      <h2>Что нужно для расчёта</h2><ul><li>Загрузить ГТД и пакинг-листы (в рабочей версии их читает ИИ-помощник) или добавить позиции вручную.</li><li>Проверить каждую позицию и поставить галочку «Подтв.».</li><li>Нажать «Рассчитать» и скачать Excel.</li></ul>
+      <h2>Совместная работа</h2><p>Владелец расчёта может открыть доступ коллеге по логину: только итог или полностью. Коллега с правом правки не меняет чужой расчёт напрямую: он правит свою копию и предлагает её владельцу, а тот принимает или отклоняет предложение.</p>
+      <h2>Вкладка «ГТД»</h2><p>Показывает все загруженные ГТД без повторов. Искать можно по последним цифрам номера или по году ГТД.</p>
+      <h2>Что отключено в демо</h2><p>Вход, загрузка файлов, реальные расчёты, скачивание Excel и администрирование. Все данные вымышленные.</p></div>`;
+  }
+
+  function notFound() { return `<div class="card"><p>Такой страницы в демо нет.</p><a class="btn btn-secondary" href="#/">К списку расчётов</a></div>`; }
+
+  // ---------- Роутер ----------
+  function render() {
+    const hash = location.hash || "#/";
+    let m, route = "dash", html;
+    if ((m = hash.match(/^#\/calc\/(\d+)\/result/))) html = pageResult(m[1]);
+    else if ((m = hash.match(/^#\/calc\/(\d+)\/review/))) html = pageReview(m[1]);
+    else if (hash.startsWith("#/new")) html = pageNew();
+    else if (hash.startsWith("#/rates")) { route = "rates"; html = pageRates(); }
+    else if (hash.startsWith("#/docs")) { route = "docs"; html = pageDocs(); }
+    else html = pageDashboard();
+    navHtml(route);
+    const app = document.getElementById("app");
+    app.className = route === "docs" ? "narrow" : "";
+    app.innerHTML = html;
+  }
+  window.addEventListener("hashchange", () => { render(); window.scrollTo(0, 0); });
+
+  // ---------- События ----------
+  function findItem(sid, iid) { return sid.items.find((i) => i.id === Number(iid)); }
+  function currentSession() { const m = (location.hash || "").match(/^#\/calc\/(\d+)\//); return m ? sessionById(m[1]) : null; }
+  function reopen(s) { s.status = "in_review"; }
+
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest("[data-act]");
+    if (!t) return;
+    const act = t.dataset.act;
+    if (act === "tab") { ui.tab = t.dataset.tab; render(); }
+    else if (act === "gtd-reset") { ui.gtdNumber = ""; ui.gtdYear = ""; render(); }
+    else if (act === "no-file") toast("В демо файлов нет: это вымышленные данные.");
+    else if (act === "no-excel") toast("В демо скачивание Excel отключено.");
+    else if (act === "propose") {
+      const base = sessionById(t.dataset.base);
+      const draft = cloneSession(base, { owner: ME, ownerEmailOfBase: base.owner });
+      PROPOSALS.push({ id: nextId++, baseId: base.id, draftId: draft.id, by: ME, status: "draft", note: "" });
+      location.hash = `#/calc/${draft.id}/review`;
+    }
+    else if (act === "cancel") {
+      const p = PROPOSALS.find((x) => x.id === Number(t.dataset.p));
+      const base = sessionById(p.baseId);
+      const di = SESSIONS.findIndex((s) => s.id === p.draftId); if (di >= 0) SESSIONS.splice(di, 1);
+      p.status = "cancelled"; p.draftId = null;
+      toast("Правка отозвана, копия удалена.");
+      location.hash = `#/calc/${base.id}/result`; render();
+    }
+    else if (act === "submit") {
+      const p = PROPOSALS.find((x) => x.id === Number(t.dataset.p));
+      const note = document.getElementById("note"); p.note = note ? note.value : p.note; p.status = "pending";
+      toast("Правка отправлена владельцу."); render();
+    }
+    else if (act === "accept") {
+      const p = PROPOSALS.find((x) => x.id === Number(t.dataset.p));
+      const base = sessionById(p.baseId), draft = sessionById(p.draftId);
+      base.items = JSON.parse(JSON.stringify(draft.items)); base.status = "calculated";
+      const di = SESSIONS.findIndex((s) => s.id === p.draftId); if (di >= 0) SESSIONS.splice(di, 1);
+      p.status = "accepted"; p.draftId = null; toast("Правка принята: расчёт обновлён."); location.hash = `#/calc/${base.id}/result`; render();
+    }
+    else if (act === "reject") {
+      const p = PROPOSALS.find((x) => x.id === Number(t.dataset.p));
+      p.status = "rejected"; p.resolved = "Нужно сверить с первичными документами"; toast("Правка отклонена, автор увидит комментарий."); location.hash = `#/calc/${p.baseId}/result`; render();
+    }
+    else if (act === "confirm") {
+      const s = currentSession(); const it = findItem(s, t.dataset.i);
+      it.confirmed = !it.confirmed; if (!it.confirmed) reopen(s); render();
+    }
+    else if (act === "del") { const s = currentSession(); s.items = s.items.filter((i) => i.id !== Number(t.dataset.i)); reopen(s); render(); }
+    else if (act === "add") {
+      const s = currentSession(); const desc = document.getElementById("new-desc").value.trim(); const w = Number(document.getElementById("new-weight").value);
+      if (!desc || !(w > 0)) { toast("Впишите описание и вес больше нуля."); return; }
+      s.items.push(item(desc, document.getElementById("new-rate").value, w, false, s.docs[0] ? s.docs[0].number : "")); reopen(s); render();
+    }
+    else if (act === "calc") { const s = currentSession(); s.status = "calculated"; location.hash = `#/calc/${s.id}/result`; }
+  });
+
+  document.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.dataset.act === "gtd-number") { ui.gtdNumber = t.value; const pos = t.selectionStart; render(); const el = document.getElementById("gtd-number"); el.focus(); el.setSelectionRange(pos, pos); }
+  });
+  document.addEventListener("change", (e) => {
+    const t = e.target, act = t.dataset.act; if (!act || act === "confirm") return;
+    if (act === "gtd-year") { ui.gtdYear = t.value; render(); return; }
+    const s = currentSession(); if (!s) return;
+    const it = findItem(s, t.dataset.i); if (!it) return;
+    if (act === "rate") { it.rateId = t.value; it.rateOverride = null; it.normOverride = null; }
+    else if (act === "weight") it.weight = Number(t.value) || 0;
+    else if (act === "rateOv") it.rateOverride = t.value === "" ? null : Number(t.value);
+    else if (act === "normOv") it.normOverride = t.value === "" ? null : Number(t.value);
+    reopen(s); render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
